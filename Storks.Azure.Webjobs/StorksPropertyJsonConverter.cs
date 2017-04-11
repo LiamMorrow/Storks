@@ -53,19 +53,6 @@ namespace Storks.Azure.Webjobs
                 this.Id = id;
             }
         }
-
-        public class DataRetriever : IStoreBackedPropertyDataCommunicator
-        {
-            public async Task<byte[]> GetDataAsync(string id)
-            {
-                await Task.Delay(300);
-                return new StringStoreBackedPropertyEncoder().Encode("Hello world");
-            }
-
-            public Task StoreDataAsync(string id, byte[] data)
-            {
-                throw new NotImplementedException();
-            }
-        }
+        
     }
 }
