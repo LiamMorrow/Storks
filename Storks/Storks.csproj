@@ -12,7 +12,7 @@
      <PackageTags>storage azure lazy</PackageTags>
  </PropertyGroup>
 
- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+ <PropertyGroup>
    <DocumentationFile>bin\Release\netstandard1.3\Storks.xml</DocumentationFile>
  </PropertyGroup>
   <ItemGroup>

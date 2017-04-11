@@ -27,7 +27,6 @@ namespace Storks
         /// <summary>
         /// Throws an <see cref="ArgumentNullException"/> if the parameter given is null or empty
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="parameterExpression">An action pointing to a parameter</param>
         /// <exception cref="ArgumentNullException">If parameter given by parameterExpression is null</exception>
         internal static void IfNullOrEmpty(Expression<Func<string>> parameterExpression)

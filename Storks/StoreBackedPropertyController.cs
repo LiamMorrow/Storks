@@ -23,6 +23,14 @@ namespace Storks
         public bool FallbackToBsonEncoder { get; set; } = true;
 
         /// <summary>
+        /// Initializes the default implementation of <see cref="IStoreBackedPropertyController"/>
+        /// </summary>
+        public StoreBackedPropertyController()
+        {
+            this.RegisterDefaultEncoders();
+        }
+
+        /// <summary>
         /// Returns the resolver for <typeparamref name="T"/>. 
         /// If there is no resolver and <see cref="FallbackToBsonEncoder"/> is set, a <see cref="BsonStoreBackedPropertyEncoder{T}"/> is used
         /// </summary>
@@ -48,7 +56,7 @@ namespace Storks
         /// <typeparam name="T">The type of value to retrieve</typeparam>
         /// <param name="property">The property that is being pulled.  The <see cref="StoreBackedProperty{T}.Id"/> should be set properly</param>
         /// <returns>The deserialized property from the store</returns>
-        public async Task<T> GetValueAsync<T>(StoreBackedProperty<T> property)
+        public async Task<T> GetValueAsync<T>(IStoreBackedProperty property)
         {
             ThrowIfNoDataCommunicator();
             if (property == null)
@@ -85,7 +93,7 @@ namespace Storks
         /// <typeparam name="T"></typeparam>
         /// <param name="value">The property to store</param>
         /// <returns>The link to retrieve he object from the store</returns>
-        public async Task<StoreBackedProperty<T>> StoreValueAsync<T>(T value)
+        public async Task<IStoreBackedProperty> StoreValueAsync<T>(T value)
         {
             ThrowIfNoDataCommunicator();
             var property = new StoreBackedProperty<T>(Guid.NewGuid().ToString());

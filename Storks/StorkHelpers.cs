@@ -3,9 +3,9 @@
 namespace Storks
 {
     /// <summary>
-    /// A collection of methods for useful functions when working with Stork
+    /// A collection of methods for useful functions when working with Storks
     /// </summary>
-    public static class StorkHelpers
+    public static class StorksHelpers
     {
         /// <summary>
         /// Registers encoders for many standard types

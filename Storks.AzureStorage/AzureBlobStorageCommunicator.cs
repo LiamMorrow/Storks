@@ -15,8 +15,7 @@ namespace Storks.AzureStorage
         /// </summary>
         /// <param name="connectionString">The connection string for connecting to Azure Blob storage</param>
         /// <param name="blobContainer">The container to use for storing data</param>
-        /// <exception cref="System.ArgumentNullException">if <paramref name="connectionString"/> is null</exception>
-        /// <exception cref="System.ArgumentNullException">if <paramref name="blobContainer"/> is null</exception>
+        /// <exception cref="System.ArgumentNullException">if either <paramref name="connectionString"/>, <paramref name="blobContainer"/> is null</exception>
         public AzureBlobStorageCommunicator(string connectionString, string blobContainer)
         {
             Throw.IfNullOrEmpty(() => connectionString);
@@ -69,6 +68,7 @@ namespace Storks.AzureStorage
         public async Task StoreDataAsync(string id, byte[] data)
         {
             Throw.IfNullOrEmpty(() => id);
+            data = data ?? new byte[0];
             var blob = await GetBlobReference(id).ConfigureAwait(false);
             await blob.UploadFromByteArrayAsync(data, 0, data.Length).ConfigureAwait(false);
         }
