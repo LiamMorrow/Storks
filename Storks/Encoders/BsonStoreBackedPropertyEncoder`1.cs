@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 
-namespace Storks.Resolvers
+namespace Storks.Encoders
 {
     /// <summary>
     /// A standard implementation of <see cref="IStoreBackedPropertyEncoder{T}"/> for storing POCOs as BSON data

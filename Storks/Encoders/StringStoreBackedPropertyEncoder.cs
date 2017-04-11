@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Storks.Resolvers
+namespace Storks.Encoders
 {
     /// <summary>
     /// A standard implementation of <see cref="IStoreBackedPropertyEncoder{T}"/> for storing strings as a byte array
