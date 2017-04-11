@@ -25,7 +25,7 @@ namespace Storks
         {
             if (parameterExpression.Compile()() == null)
             {
-                string name = GetParameterName(parameterExpression);
+                var name = GetParameterName(parameterExpression);
                 throw new ArgumentNullException(name);
             }
         }
