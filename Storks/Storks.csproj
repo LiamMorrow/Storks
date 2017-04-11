@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
  <PropertyGroup>
-     <TargetFrameworks>netstandard1.4;net45;net46</TargetFrameworks>
-     <PackageId>Storks.LiamMorrow</PackageId>
+     <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
+     <PackageId>Storks</PackageId>
      <PackageVersion>1.0.0</PackageVersion>
      <Authors>Liam Morrow</Authors>
      <Description>Utilities for lazy loading and separating values into storage</Description>
@@ -13,7 +13,7 @@
  </PropertyGroup>
 
  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-   <DocumentationFile>bin\Release\netstandard1.4\Storks.xml</DocumentationFile>
+   <DocumentationFile>bin\Release\netstandard1.3\Storks.xml</DocumentationFile>
  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />

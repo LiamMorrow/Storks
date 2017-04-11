@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
  <PropertyGroup>
-     <TargetFrameworks>netstandard1.4;net45;net46</TargetFrameworks>
+     <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
      <PackageId>Storks.AzureStorage</PackageId>
      <PackageVersion>1.0.0</PackageVersion>
      <Authors>Liam Morrow</Authors>
@@ -13,11 +13,17 @@
  </PropertyGroup>
 
  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-   <DocumentationFile>bin\Release\netstandard1.4\Storks.AzureStorage.xml</DocumentationFile>
+   <DocumentationFile>bin\Release\netstandard1.3\Storks.AzureStorage.xml</DocumentationFile>
  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
+    <PackageReference Include="Storks" Version="1.0.0" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <ProjectReference Include="..\Storks\Storks.csproj" />
   </ItemGroup>
 
 

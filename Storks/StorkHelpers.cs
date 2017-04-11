@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Storks.Encoders;
+﻿using Storks.Encoders;
 
 namespace Storks
 {
@@ -14,26 +11,11 @@ namespace Storks
         /// Registers encoders for many standard types
         /// </summary>
         /// <param name="controller">The controller to register the encoders to</param>
+        /// <exception cref="System.ArgumentNullException">if <paramref name="controller"/> is null</exception>
         public static void RegisterDefaultEncoders(this IStoreBackedPropertyController controller)
         {
-            ThrowIfNull(() => controller);
+            Throw.IfNull(() => controller);
             controller.RegisterEncoder(new StringStoreBackedPropertyEncoder());
-        }
-
-        private static void ThrowIfNull<T>(Expression<Func<T>> parameterExpression)
-            where T : class
-        {
-            if (parameterExpression.Compile()() == null)
-            {
-                var name = GetParameterName(parameterExpression);
-                throw new ArgumentNullException(name);
-            }
-        }
-
-        private static string GetParameterName<T>(Expression<Func<T>> parameterExpression)
-        {
-            var body = (MemberExpression)parameterExpression.Body;
-            return body.Member.Name;
         }
     }
 }
