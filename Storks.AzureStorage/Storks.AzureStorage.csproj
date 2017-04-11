@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+ <PropertyGroup>
+     <TargetFrameworks>netstandard1.4;net45;net46</TargetFrameworks>
+     <PackageId>Storks.AzureStorage</PackageId>
+     <PackageVersion>1.0.0</PackageVersion>
+     <Authors>Liam Morrow</Authors>
+     <Description>Utilities for lazy loading and separating values into azure storage</Description>
+     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+     <PackageReleaseNotes>First release</PackageReleaseNotes>
+     <Copyright>Copyright 2016 (c) Liam Morrow. All rights reserved.</Copyright>
+     <PackageTags>storage azure lazy</PackageTags>
+ </PropertyGroup>
+
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+   <DocumentationFile>bin\Release\netstandard1.4\Storks.AzureStorage.xml</DocumentationFile>
+ </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
+  </ItemGroup>
+
+
+</Project>
