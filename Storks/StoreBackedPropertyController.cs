@@ -56,7 +56,8 @@ namespace Storks
                 throw new ArgumentNullException(nameof(property));
             }
             var encoder = GetEncoder<T>();
-            var data = await DataCommunicator.GetDataAsync(property.Id).ConfigureAwait(false);
+            var data = await DataCommunicator.GetDataAsync(property.Id)
+                .ConfigureAwait(false);
             return encoder.Decode(data);
         }
 
