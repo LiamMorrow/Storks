@@ -1,5 +1,4 @@
-﻿using Microsoft.CSharp.RuntimeBinder;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Storks.Encoders;
 using System;
@@ -29,10 +28,11 @@ namespace Storks.Azure.Webjobs
             JToken jtoken;
             if (jobject == null || !jobject.HasValues || !jobject.TryGetValue("Id", out jtoken))
                 return (object)null;
+            
             string id = jtoken.Value<string>();
             dynamic task = typeof(IStoreBackedPropertyController).GetMethod("GetValueAsync")
                 .MakeGenericMethod(objectType.GenericTypeArguments[0])
-                .Invoke(_controller, new[] { new StoreBackedProperty(objectType.GenericParameterAttributes()[0], id) });
+                .Invoke(_controller, new[] { new StoreBackedProperty(objectType.GenericTypeArguments[0], id) });
             var result = task.Result;
             return Activator.CreateInstance(objectType, id, result);
         }

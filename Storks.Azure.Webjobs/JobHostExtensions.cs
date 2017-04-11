@@ -10,7 +10,7 @@ namespace Storks.Azure.Webjobs
     {
         public static void UseStoreBackedPropertyBinder(this JobHostConfiguration config, IStoreBackedPropertyController controller)
         {
-            JsonConvert.DefaultSettings = JobHostExtensions.GetDefaultSettings(controller);
+            JsonConvert.DefaultSettings = GetDefaultSettings(controller);
         }
 
         private static Func<JsonSerializerSettings> GetDefaultSettings(IStoreBackedPropertyController controller)
@@ -18,8 +18,8 @@ namespace Storks.Azure.Webjobs
             return () =>
            {
                var serializerSettings = new JsonSerializerSettings();
-               serializerSettings.Converters = serializerSettings.Converters ?? (IList<JsonConverter>)new List<JsonConverter>();
-               serializerSettings.Converters.Add((JsonConverter)new StorksPropertyJsonConverter(controller));
+               serializerSettings.Converters = serializerSettings.Converters ?? new List<JsonConverter>();
+               serializerSettings.Converters.Add(new StorksPropertyJsonConverter(controller));
                return serializerSettings;
            };
         }
