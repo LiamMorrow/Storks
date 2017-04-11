@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace Storks
 {
-
     /// <summary>
     /// Represents a property value that needs to be retrieved from storage
     /// </summary>
@@ -29,10 +28,10 @@ namespace Storks
     /// Represents a property value that needs to be retrieved from storage
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class StoreBackedProperty<T>:IStoreBackedProperty
+    public class StoreBackedProperty<T> : IStoreBackedProperty
     {
         private StoreBackedProperty()
-            :this(Guid.NewGuid().ToString())
+            : this(Guid.NewGuid().ToString())
         {
         }
 
@@ -41,7 +40,7 @@ namespace Storks
         /// </summary>
         /// <param name="id">The unique id of the property for reference in storage</param>
         /// <param name="value">The loaded value of the store backed property.</param>
-        public StoreBackedProperty(string id, T value):this(id)
+        public StoreBackedProperty(string id, T value) : this(id)
         {
             Value = value;
         }

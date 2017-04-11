@@ -5,7 +5,6 @@ using Storks.Encoders;
 
 namespace Storks
 {
-
     internal static class Throw
     {
         /// <summary>

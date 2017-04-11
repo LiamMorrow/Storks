@@ -13,9 +13,11 @@
  </PropertyGroup>
 
  <PropertyGroup>
-   <DocumentationFile>bin\Release\netstandard1.3\Storks.xml</DocumentationFile>
+   <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Storks.xml</DocumentationFile>
+   <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" Condition="'$(TargetFramework)' == 'net46'" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
   </ItemGroup>

@@ -14,13 +14,14 @@
 
  <PropertyGroup>
    <DocumentationFile>bin\Release\netstandard1.3\Storks.AzureStorage.xml</DocumentationFile>
+   <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
+    <PackageReference Include="Storks" Version="1.0.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
-    <PackageReference Include="Storks" Version="1.0.0" Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <ProjectReference Include="..\Storks\Storks.csproj" />
