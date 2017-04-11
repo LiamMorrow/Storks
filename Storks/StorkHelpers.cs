@@ -23,7 +23,7 @@ namespace Storks
         private static void ThrowIfNull<T>(Expression<Func<T>> parameterExpression)
             where T : class
         {
-            if (null == parameterExpression.Compile()())
+            if (parameterExpression.Compile()() == null)
             {
                 string name = GetParameterName(parameterExpression);
                 throw new ArgumentNullException(name);
@@ -32,7 +32,7 @@ namespace Storks
 
         private static string GetParameterName<T>(Expression<Func<T>> parameterExpression)
         {
-            dynamic body = parameterExpression.Body;
+            var body = (MemberExpression)parameterExpression.Body;
             return body.Member.Name;
         }
     }
