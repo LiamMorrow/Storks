@@ -54,6 +54,7 @@ namespace Storks
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jobject = JObject.Load(reader);
+            var storeBackedPropertyType = objectType.GenericTypeArguments[0];
 
             // Check if the JSON is valid i.e. has and Id property
             if (jobject == null || !jobject.HasValues || !jobject.TryGetValue("Id", out var jtoken))
@@ -63,8 +64,11 @@ namespace Storks
 
             var id = jtoken.Value<string>();
 
-            // Using dynamic here to simplify the use of a generic Task.Result.
             // TODO use expression compilation and a caching strategy to move away from the DLR
+
+            var storeBackedProperty = Activator.CreateInstance(objectType, id);
+
+            // Using dynamic here to simplify the use of a generic Task.Result.
             dynamic task = typeof(IStoreBackedPropertyController)
 #if !NETSTANDARD1_3
                 .GetMethod("GetValueAsync")
@@ -72,8 +76,8 @@ namespace Storks
                 .GetTypeInfo()
                 .GetDeclaredMethod("GetValueAsync")
 #endif
-                .MakeGenericMethod(objectType.GenericTypeArguments[0])
-                .Invoke(_controller, new[] { new StoreBackedProperty(objectType.GenericTypeArguments[0], id) });
+                .MakeGenericMethod(storeBackedPropertyType)
+                .Invoke(_controller, new[] { storeBackedProperty });
             var result = task.Result;
             return Activator.CreateInstance(objectType, id, result);
         }
@@ -94,18 +98,5 @@ namespace Storks
         /// </summary>
         /// <value><c>true</c> if this <see cref="JsonConverter" /> can write JSON; otherwise, <c>false</c>.</value>
         public override bool CanWrite => false;
-
-        private class StoreBackedProperty : IStoreBackedProperty
-        {
-            public Type PropertyType { get; }
-
-            public string Id { get; }
-
-            public StoreBackedProperty(Type objectType, string id)
-            {
-                this.PropertyType = objectType;
-                this.Id = id;
-            }
-        }
     }
 }

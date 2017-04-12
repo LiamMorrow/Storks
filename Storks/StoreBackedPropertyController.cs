@@ -25,9 +25,12 @@ namespace Storks
         /// <summary>
         /// Initializes the default implementation of <see cref="IStoreBackedPropertyController"/>
         /// </summary>
-        public StoreBackedPropertyController()
+        /// <param name="dataCommunicator">The <see cref="DataCommunicator"/> to use for storage and retrieval operations</param>
+        public StoreBackedPropertyController(IStoreBackedPropertyDataCommunicator dataCommunicator)
         {
+            Throw.IfNull(() => dataCommunicator);
             this.RegisterDefaultEncoders();
+            DataCommunicator = dataCommunicator;
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace Storks
         /// <typeparam name="T">The type of value to retrieve</typeparam>
         /// <param name="property">The property that is being pulled.  The <see cref="StoreBackedProperty{T}.Id"/> should be set properly</param>
         /// <returns>The deserialized property from the store</returns>
-        public async Task<T> GetValueAsync<T>(IStoreBackedProperty property)
+        public async Task<T> GetValueAsync<T>(StoreBackedProperty<T> property)
         {
             ThrowIfNoDataCommunicator();
             if (property == null)
@@ -93,7 +96,7 @@ namespace Storks
         /// <typeparam name="T"></typeparam>
         /// <param name="value">The property to store</param>
         /// <returns>The link to retrieve he object from the store</returns>
-        public async Task<IStoreBackedProperty> StoreValueAsync<T>(T value)
+        public async Task<StoreBackedProperty<T>> StoreValueAsync<T>(T value)
         {
             ThrowIfNoDataCommunicator();
             var property = new StoreBackedProperty<T>(Guid.NewGuid().ToString());
@@ -101,6 +104,14 @@ namespace Storks
             var bytes = encoder.Encode(value);
             await DataCommunicator.StoreDataAsync(property.Id, bytes).ConfigureAwait(false);
             return property;
+        }
+
+        /// <summary>
+        /// Disposes the object
+        /// </summary>
+        public void Dispose()
+        {
+            // No implementation necessary.
         }
     }
 }

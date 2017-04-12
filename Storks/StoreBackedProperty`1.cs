@@ -11,24 +11,8 @@ namespace Storks
     /// <summary>
     /// Represents a property value that needs to be retrieved from storage
     /// </summary>
-    public interface IStoreBackedProperty
-    {
-        /// <summary>
-        /// The type of the property to deserialize into
-        /// </summary>
-        Type PropertyType { get; }
-
-        /// <summary>
-        /// A unique identifier for the data in storage
-        /// </summary>
-        string Id { get; }
-    }
-
-    /// <summary>
-    /// Represents a property value that needs to be retrieved from storage
-    /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class StoreBackedProperty<T> : IStoreBackedProperty
+    public class StoreBackedProperty<T>
     {
         private StoreBackedProperty()
             : this(Guid.NewGuid().ToString())
