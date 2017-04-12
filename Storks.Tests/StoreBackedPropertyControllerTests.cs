@@ -27,10 +27,8 @@ namespace Storks.Tests
         [TestMethod]
         public void TestNoDataCommunicatorThrowsException()
         {
-            var controller = GetDefaultController();
-
-            // Remove the DataCommunicator
-            controller.DataCommunicator = null;
+            // Make a new controller with no DataCommunicator
+            var controller = GetDefaultController(x => x.DataCommunicator = null);
 
             // Attempt to get data when there is no DataCommunicator set
             Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>

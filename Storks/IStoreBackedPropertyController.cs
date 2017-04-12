@@ -11,11 +11,6 @@ namespace Storks
     public interface IStoreBackedPropertyController : IDisposable
     {
         /// <summary>
-        /// Used to communicate with the store for storing / retrieving data
-        /// </summary>
-        IStoreBackedPropertyDataCommunicator DataCommunicator { get; set; }
-
-        /// <summary>
         /// Gets the <see cref="IStoreBackedPropertyEncoder{T}"/> for the type given by <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
