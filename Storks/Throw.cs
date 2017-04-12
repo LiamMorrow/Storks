@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+using System;
 using System.Linq.Expressions;
-using Storks.Encoders;
 
 namespace Storks
 {

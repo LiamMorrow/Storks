@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Storks.Encoders;
@@ -6,21 +8,12 @@ using Storks.Encoders;
 namespace Storks
 {
     /// <summary>
-    /// A default implementation of <see cref="IStoreBackedPropertyController"/> using a <see cref="IStoreBackedPropertyDataCommunicator"/> 
+    /// A default implementation of <see cref="IStoreBackedPropertyController"/> using a <see cref="IStoreBackedPropertyDataCommunicator"/>
     /// for interaction with the store
     /// </summary>
     public class StoreBackedPropertyController : IStoreBackedPropertyController
     {
         private readonly ConcurrentDictionary<Type, object> _encoders = new ConcurrentDictionary<Type, object>();
-        /// <summary>
-        /// Used to communicate with the store for storing / retrieving data
-        /// </summary>
-        public IStoreBackedPropertyDataCommunicator DataCommunicator { get; set; }
-
-        /// <summary>
-        /// When set to true, we will use the <see cref="BsonStoreBackedPropertyEncoder{T}"/> if there is no resolver set for the given type
-        /// </summary>
-        public bool FallbackToBsonEncoder { get; set; } = true;
 
         /// <summary>
         /// Initializes the default implementation of <see cref="IStoreBackedPropertyController"/>
@@ -34,7 +27,25 @@ namespace Storks
         }
 
         /// <summary>
-        /// Returns the resolver for <typeparamref name="T"/>. 
+        /// Used to communicate with the store for storing / retrieving data
+        /// </summary>
+        public IStoreBackedPropertyDataCommunicator DataCommunicator { get; set; }
+
+        /// <summary>
+        /// When set to true, we will use the <see cref="BsonStoreBackedPropertyEncoder{T}"/> if there is no resolver set for the given type
+        /// </summary>
+        public bool FallbackToBsonEncoder { get; set; } = true;
+
+        /// <summary>
+        /// Disposes the object
+        /// </summary>
+        public void Dispose()
+        {
+            // No implementation necessary.
+        }
+
+        /// <summary>
+        /// Returns the resolver for <typeparamref name="T"/>.
         /// If there is no resolver and <see cref="FallbackToBsonEncoder"/> is set, a <see cref="BsonStoreBackedPropertyEncoder{T}"/> is used
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -72,14 +83,6 @@ namespace Storks
             return encoder.Decode(data);
         }
 
-        private void ThrowIfNoDataCommunicator()
-        {
-            if (DataCommunicator == null)
-            {
-                throw new InvalidOperationException("No DataRetriever set");
-            }
-        }
-
         /// <summary>
         /// Registers an encoder to be used for serialization/deserialization of <see cref="StoreBackedProperty{T}"/>
         /// </summary>
@@ -96,6 +99,9 @@ namespace Storks
         /// <typeparam name="T"></typeparam>
         /// <param name="value">The property to store</param>
         /// <returns>The link to retrieve he object from the store</returns>
+        /// <exception cref="InvalidOperationException">
+        /// When there is no encoder set for <typeparamref name="T"/> and <see cref="FallbackToBsonEncoder"/> is false
+        /// </exception>
         public async Task<StoreBackedProperty<T>> StoreValueAsync<T>(T value)
         {
             ThrowIfNoDataCommunicator();
@@ -106,12 +112,12 @@ namespace Storks
             return property;
         }
 
-        /// <summary>
-        /// Disposes the object
-        /// </summary>
-        public void Dispose()
+        private void ThrowIfNoDataCommunicator()
         {
-            // No implementation necessary.
+            if (DataCommunicator == null)
+            {
+                throw new InvalidOperationException("No DataRetriever set");
+            }
         }
     }
 }

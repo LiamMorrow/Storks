@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Storks.Encoders;
@@ -11,6 +13,15 @@ namespace Storks
     public static class StorksHelpers
     {
         /// <summary>
+        /// When called, all Json that is converted without custom settings will deserialize <see cref="StoreBackedProperty{T}"/>s and pull their data
+        /// </summary>
+        /// <param name="controller">The controller to use to retrieve data</param>
+        public static void AutoBindLoadedJson(this IStoreBackedPropertyController controller)
+        {
+            JsonConvert.DefaultSettings = GetDefaultSettings(controller);
+        }
+
+        /// <summary>
         /// Registers encoders for many standard types This does not need to be called on <see cref="StoreBackedPropertyController"/>
         /// </summary>
         /// <param name="controller">The controller to register the encoders to</param>
@@ -19,15 +30,7 @@ namespace Storks
         {
             Throw.IfNull(() => controller);
             controller.RegisterEncoder(new StringStoreBackedPropertyEncoder());
-        }
-
-        /// <summary>
-        /// When called, all Json that is converted without custom settings will deserialize <see cref="StoreBackedProperty{T}"/>s and pull their data
-        /// </summary>
-        /// <param name="controller">The controller to use to retrieve data</param>
-        public static void AutoBindLoadedJson(this IStoreBackedPropertyController controller)
-        {
-            JsonConvert.DefaultSettings = GetDefaultSettings(controller);
+            controller.RegisterEncoder(new ByteArrayStoreBackedPropertyEncoder());
         }
 
         private static Func<JsonSerializerSettings> GetDefaultSettings(IStoreBackedPropertyController controller)

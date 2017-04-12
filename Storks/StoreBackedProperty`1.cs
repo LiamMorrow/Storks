@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
+using System;
 using Newtonsoft.Json;
 
 namespace Storks
@@ -14,11 +11,6 @@ namespace Storks
     /// <typeparam name="T"></typeparam>
     public class StoreBackedProperty<T>
     {
-        private StoreBackedProperty()
-            : this(Guid.NewGuid().ToString())
-        {
-        }
-
         /// <summary>
         /// Initializes a new StoreBackedProperty with a given value
         /// </summary>
@@ -30,13 +22,6 @@ namespace Storks
         }
 
         /// <summary>
-        /// The loaded value of the store backed property.
-        /// This can be used to avoid creating temporary variables
-        /// </summary>
-        [JsonIgnore]
-        public T Value { get; }
-
-        /// <summary>
         /// The default constructor for a <see cref="StoreBackedProperty{T}"/>
         /// </summary>
         /// <param name="id">The unique id of the property for reference in storage</param>
@@ -44,6 +29,11 @@ namespace Storks
         public StoreBackedProperty(string id)
         {
             Id = id;
+        }
+
+        private StoreBackedProperty()
+                            : this(Guid.NewGuid().ToString())
+        {
         }
 
         /// <summary>
@@ -55,5 +45,12 @@ namespace Storks
         /// The type of the property to deserialize into
         /// </summary>
         public Type PropertyType => typeof(T);
+
+        /// <summary>
+        /// The loaded value of the store backed property.
+        /// This can be used to avoid creating temporary variables
+        /// </summary>
+        [JsonIgnore]
+        public T Value { get; }
     }
 }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+
 using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Storks.Encoders
 {
@@ -15,17 +10,17 @@ namespace Storks.Encoders
     public class StringStoreBackedPropertyEncoder : IStoreBackedPropertyEncoder<string>
     {
         /// <summary>
-        /// The <see cref="System.Text.Encoding"/> to use to convert <see cref="string"/> to and from <see cref="T:byte[]"/>
-        /// </summary>
-        public Encoding Encoding { get; set; }
-
-        /// <summary>
         /// Constructs a new <see cref="StringStoreBackedPropertyEncoder"/> with the <see cref="Encoding"/> set to <see cref="Encoding.Unicode"/>
         /// </summary>
         public StringStoreBackedPropertyEncoder()
         {
             Encoding = Encoding.Unicode;
         }
+
+        /// <summary>
+        /// The <see cref="System.Text.Encoding"/> to use to convert <see cref="string"/> to and from <see cref="T:byte[]"/>
+        /// </summary>
+        public Encoding Encoding { get; set; }
 
         /// <summary>
         /// Decodes the data using <see cref="Encoding.GetString(byte[])"/> using the encoding specified by <see cref="Encoding"/>
@@ -50,7 +45,7 @@ namespace Storks.Encoders
         public byte[] Encode(string data)
         {
             var encoding = Encoding ?? Encoding.Unicode;
-            if(data == null)
+            if (data == null)
             {
                 return new byte[0];
             }
