@@ -16,6 +16,11 @@ namespace Storks
         private readonly ConcurrentDictionary<Type, object> _encoders = new ConcurrentDictionary<Type, object>();
 
         /// <summary>
+        /// Used to detect multiple calls to <see cref="Dispose()"/> and to throw an error if methods are accessed after disposal
+        /// </summary>
+        private bool _isDisposed;
+
+        /// <summary>
         /// Initializes the default implementation of <see cref="IStoreBackedPropertyController"/>
         /// </summary>
         /// <param name="dataCommunicator">The <see cref="DataCommunicator"/> to use for storage and retrieval operations</param>
@@ -29,7 +34,7 @@ namespace Storks
         /// <summary>
         /// Used to communicate with the store for storing / retrieving data
         /// </summary>
-        public IStoreBackedPropertyDataCommunicator DataCommunicator { get; set; }
+        public virtual IStoreBackedPropertyDataCommunicator DataCommunicator { get; set; }
 
         /// <summary>
         /// When set to true, we will use the <see cref="BsonStoreBackedPropertyEncoder{T}"/> if there is no resolver set for the given type
@@ -37,11 +42,17 @@ namespace Storks
         public bool FallbackToBsonEncoder { get; set; } = true;
 
         /// <summary>
-        /// Disposes the object
+        /// Gets a value indicating whether this object has been disposed via the <see cref="Dispose()"/> method
+        /// </summary>
+        protected bool IsDisposed => _isDisposed;
+
+        /// <summary>
+        /// Disposes the current object
         /// </summary>
         public void Dispose()
         {
-            // No implementation necessary.
+            // Do not change this code. Put cleanup code in the virtual Dispose(bool disposing) method.
+            Dispose(true);
         }
 
         /// <summary>
@@ -50,8 +61,9 @@ namespace Storks
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>A resolver for type <typeparamref name="T"/></returns>
-        public IStoreBackedPropertyEncoder<T> GetEncoder<T>()
+        public virtual IStoreBackedPropertyEncoder<T> GetEncoder<T>()
         {
+            ThrowIfDisposed();
             if (_encoders.TryGetValue(typeof(T), out var resolver)
                 && resolver != null)
             {
@@ -70,8 +82,9 @@ namespace Storks
         /// <typeparam name="T">The type of value to retrieve</typeparam>
         /// <param name="property">The property that is being pulled.  The <see cref="StoreBackedProperty{T}.Id"/> should be set properly</param>
         /// <returns>The deserialized property from the store</returns>
-        public async Task<T> GetValueAsync<T>(StoreBackedProperty<T> property)
+        public virtual async Task<T> GetValueAsync<T>(StoreBackedProperty<T> property)
         {
+            ThrowIfDisposed();
             ThrowIfNoDataCommunicator();
             if (property == null)
             {
@@ -88,8 +101,9 @@ namespace Storks
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="encoder">The encoder to set.  If set to null, removes the encoder for type <typeparamref name="T"/></param>
-        public void RegisterEncoder<T>(IStoreBackedPropertyEncoder<T> encoder)
+        public virtual void RegisterEncoder<T>(IStoreBackedPropertyEncoder<T> encoder)
         {
+            ThrowIfDisposed();
             _encoders.AddOrUpdate(typeof(T), encoder, (t, o) => encoder);
         }
 
@@ -102,14 +116,41 @@ namespace Storks
         /// <exception cref="InvalidOperationException">
         /// When there is no encoder set for <typeparamref name="T"/> and <see cref="FallbackToBsonEncoder"/> is false
         /// </exception>
-        public async Task<StoreBackedProperty<T>> StoreValueAsync<T>(T value)
+        public virtual async Task<StoreBackedProperty<T>> StoreValueAsync<T>(T value)
         {
+            ThrowIfDisposed();
             ThrowIfNoDataCommunicator();
             var property = new StoreBackedProperty<T>(Guid.NewGuid().ToString());
             var encoder = GetEncoder<T>();
             var bytes = encoder.Encode(value);
             await DataCommunicator.StoreDataAsync(property.Id, bytes).ConfigureAwait(false);
             return property;
+        }
+
+        /// <summary>
+        /// The implementation of the IDisposable pattern
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed objects
+                }
+                DataCommunicator = null;
+                _encoders.Clear();
+                _isDisposed = true;
+            }
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException("StoreBackedPropertyController");
+            }
         }
 
         private void ThrowIfNoDataCommunicator()

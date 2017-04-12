@@ -1,58 +1,95 @@
 ﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 using System;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Storks.Encoders;
 
 namespace Storks.Tests
 {
     [TestClass]
     public class StoreBackedPropertyControllerTests
     {
+        /// <summary>
+        /// This test verifies that a custom encoder is used when
+        /// one is set with <see cref="IStoreBackedPropertyController.RegisterEncoder{T}(IStoreBackedPropertyEncoder{T})"/>
+        /// </summary>
         [TestMethod]
-        public async Task TestFallbackToBson()
+        public void TestCustomEncoderRegistering()
         {
-            var propertyId = Guid.NewGuid().ToString();
-            var communicator = new InMemoryDataCommunicator();
-            var controller = new StoreBackedPropertyController(communicator)
-            {
-                FallbackToBsonEncoder = true
-            };
-            var testPocoInput = new TestPoco
-            {
-                Name = "JellyBean",
-                IntVal = 5454
-            };
-            var propertyPointer = await controller.StoreValueAsync(testPocoInput).ConfigureAwait(false);
-
-            var controllerRetrieveOutput = await controller.GetValueAsync(propertyPointer).ConfigureAwait(false);
-
-            Assert.AreEqual(testPocoInput.Name, controllerRetrieveOutput.Name);
-            Assert.AreEqual(testPocoInput.IntVal, controllerRetrieveOutput.IntVal);
+            var controller = GetDefaultController();
+            controller.RegisterEncoder(new TestPocoEncoder());
+            Assert.IsInstanceOfType(controller.GetEncoder<TestPoco>(), typeof(TestPocoEncoder), "Expected encoder to be one that was set");
         }
 
+        /// <summary>
+        /// This test verifies that an exception will be thrown if the controller has no DataCommunicator set
+        /// </summary>
         [TestMethod]
-        public async Task TestNoFallbackToBson()
+        public void TestNoDataCommunicatorThrowsException()
         {
-            var propertyId = Guid.NewGuid().ToString();
+            var controller = GetDefaultController();
+
+            // Remove the DataCommunicator
+            controller.DataCommunicator = null;
+
+            // Attempt to get data when there is no DataCommunicator set
+            Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+                controller.GetValueAsync(new StoreBackedProperty<string>("123")));
+        }
+
+        /// <summary>
+        /// This test verifies that a <see cref="StoreBackedPropertyController"/> cannot be used if it has already been disposed
+        /// </summary>
+        [TestMethod]
+        public void TestNoDisposedUsage()
+        {
+            var controller = GetDefaultController();
+            controller.Dispose();
+            Assert.ThrowsException<ObjectDisposedException>(controller.GetEncoder<string>);
+        }
+
+        /// <summary>
+        /// This test verifies that if <see cref="StoreBackedPropertyController.FallbackToBsonEncoder"/> is true,
+        /// the controller will use the <see cref="BsonStoreBackedPropertyEncoder{T}"/> to encode the data when no encoder is registered for that type
+        /// </summary>
+        [TestMethod]
+        public void TestFallbackToBson()
+        {
+            var controller = GetDefaultController(x => x.FallbackToBsonEncoder = true);
+            Assert.IsInstanceOfType(controller.GetEncoder<TestPoco>(), typeof(BsonStoreBackedPropertyEncoder<TestPoco>), "BSON encoder not returned for unknown type");
+        }
+
+        /// <summary>
+        /// This test verifies that if <see cref="StoreBackedPropertyController.FallbackToBsonEncoder"/> is false,
+        /// An <see cref="InvalidOperationException"/> is thrown when no encoder is registered for that type
+        /// </summary>
+        [TestMethod]
+        public void TestNoFallbackToBson()
+        {
+            var controller = GetDefaultController(x => x.FallbackToBsonEncoder = false);
+
+            Assert.ThrowsException<InvalidOperationException>(() => controller.GetEncoder<TestPoco>());
+        }
+
+        private IStoreBackedPropertyController GetDefaultController(Action<StoreBackedPropertyController> customSettings = null)
+        {
             var communicator = new InMemoryDataCommunicator();
-            var controller = new StoreBackedPropertyController(communicator)
-            {
-                FallbackToBsonEncoder = false
-            };
-            var testPocoInput = new TestPoco
-            {
-                Name = "JellyBean",
-                IntVal = 3
-            };
-            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => controller.StoreValueAsync(testPocoInput))
-                .ConfigureAwait(false);
+            var controller = new StoreBackedPropertyController(communicator);
+            customSettings?.Invoke(controller);
+            return controller;
         }
 
         private class TestPoco
         {
             public int IntVal { get; set; }
             public string Name { get; set; }
+        }
+
+        /// <summary>
+        /// A custom encoder based on the <see cref="JsonStoreBackedPropertyEncoder{T}"/>
+        /// </summary>
+        private class TestPocoEncoder : JsonStoreBackedPropertyEncoder<TestPoco>
+        {
         }
     }
 }
