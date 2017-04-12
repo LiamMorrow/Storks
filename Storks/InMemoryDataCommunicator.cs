@@ -11,9 +11,25 @@ namespace Storks
     /// </summary>
     public class InMemoryDataCommunicator : IStoreBackedPropertyDataCommunicator
     {
-        private readonly ConcurrentDictionary<string, byte[]> _memoryStore = new ConcurrentDictionary<string, byte[]>();
+        private readonly IDictionary<string, byte[]> _memoryStore;
 
-        
+        /// <summary>
+        /// Creates a new instance of <see cref="InMemoryDataCommunicator"/> with its own concurrent memory store
+        /// </summary>
+        public InMemoryDataCommunicator() : this(new ConcurrentDictionary<string, byte[]>())
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="InMemoryDataCommunicator"/> with the given <paramref name="memoryStore"/>
+        /// </summary>
+        /// <param name="memoryStore">The backing store to use for data operations</param>
+        public InMemoryDataCommunicator(IDictionary<string, byte[]> memoryStore)
+        {
+            Throw.IfNull(() => memoryStore);
+            _memoryStore = memoryStore;
+        }
+
         /// <summary>
         /// Retrieves the data from the store, using the unique ID given
         /// </summary>
@@ -42,12 +58,7 @@ namespace Storks
         public Task StoreDataAsync(string id, byte[] data)
         {
             Throw.IfNullOrEmpty(() => id);
-            if (data == null)
-            {
-                _memoryStore.TryRemove(id, out var dummy);
-                return Task.FromResult(true);
-            }
-            _memoryStore.AddOrUpdate(id, data, (key,oldData) => data);
+            _memoryStore[id] = data;
             return Task.FromResult(true);
         }
     }
