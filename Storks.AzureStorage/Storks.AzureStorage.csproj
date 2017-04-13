@@ -3,11 +3,11 @@
  <PropertyGroup>
      <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
      <PackageId>Storks.AzureStorage</PackageId>
-     <PackageVersion>1.1.0</PackageVersion>
+     <PackageVersion>1.2.0</PackageVersion>
      <Authors>Liam Morrow</Authors>
      <Description>Utilities for lazy loading and separating values into azure storage</Description>
      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-     <PackageReleaseNotes>Edited Api to remove IStoreBackedProperty to remove the need to cast when setting a property</PackageReleaseNotes>
+     <PackageReleaseNotes>Updated to match core Storks library</PackageReleaseNotes>
      <Copyright>Copyright 2016 (c) Liam Morrow. All rights reserved.</Copyright>
      <PackageTags>storage azure lazy</PackageTags>
  </PropertyGroup>
@@ -20,14 +20,14 @@
    <PackageIconUrl>https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png</PackageIconUrl>
    <RepositoryUrl>https://github.com/LiamMorrow/Storks</RepositoryUrl>
    <NeutralLanguage>en-AU</NeutralLanguage>
-   <AssemblyVersion>1.1.0.0</AssemblyVersion>
-   <FileVersion>1.1.0.0</FileVersion>
+   <AssemblyVersion>1.2.0.0</AssemblyVersion>
+   <FileVersion>1.2.0.0</FileVersion>
  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.1" />
-    <PackageReference Include="Storks" Version="1.1.0" />
+    <PackageReference Include="Storks" Version="1.2.1" />
     <PackageReference Include="WindowsAzure.Storage" Version="8.1.1" />
   </ItemGroup>
 </Project>

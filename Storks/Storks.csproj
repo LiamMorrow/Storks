@@ -3,11 +3,14 @@
  <PropertyGroup>
      <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
      <PackageId>Storks</PackageId>
-     <PackageVersion>1.1.0</PackageVersion>
+     <PackageVersion>1.2.1</PackageVersion>
      <Authors>Liam Morrow</Authors>
-     <Description>Utilities for lazy loading and separating values into storage</Description>
+     <Description>Utilities for lazy loading and separating values into storage. Very useful for message queues which have a limited size per message</Description>
      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-     <PackageReleaseNotes>Edited Api to remove IStoreBackedProperty to remove the need to cast when setting a property</PackageReleaseNotes>
+     <PackageReleaseNotes>
+     Added an InMemoryDataCommunicator for an in memory datastore utilising ConcurrentDictionary as its store
+     Added a LocalFileDataCommunicator for a local file storage backed store
+     </PackageReleaseNotes>
      <Copyright>Copyright 2016 (c) Liam Morrow. All rights reserved.</Copyright>
      <PackageTags>storage azure lazy</PackageTags>
  </PropertyGroup>
@@ -21,7 +24,9 @@
    <PackageIconUrl>https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png</PackageIconUrl>
    <RepositoryUrl>https://github.com/LiamMorrow/Storks</RepositoryUrl>
    <NeutralLanguage>en-AU</NeutralLanguage>
-   <Version>1.1.0</Version>
+   <Version>1.2.1</Version>
+   <AssemblyVersion>1.2.1.0</AssemblyVersion>
+   <FileVersion>1.2.1.0</FileVersion>
  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
