@@ -3,7 +3,7 @@
  <PropertyGroup>
      <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
      <PackageId>Storks</PackageId>
-     <PackageVersion>1.2.1</PackageVersion>
+     <PackageVersion>1.2.2</PackageVersion>
      <Authors>Liam Morrow</Authors>
      <Description>Utilities for lazy loading and separating values into storage. Very useful for message queues which have a limited size per message</Description>
      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -24,9 +24,9 @@
    <PackageIconUrl>https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png</PackageIconUrl>
    <RepositoryUrl>https://github.com/LiamMorrow/Storks</RepositoryUrl>
    <NeutralLanguage>en-AU</NeutralLanguage>
-   <Version>1.2.1</Version>
-   <AssemblyVersion>1.2.1.0</AssemblyVersion>
-   <FileVersion>1.2.1.0</FileVersion>
+   <Version>1.2.2</Version>
+   <AssemblyVersion>1.2.2.0</AssemblyVersion>
+   <FileVersion>1.2.2.0</FileVersion>
  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
