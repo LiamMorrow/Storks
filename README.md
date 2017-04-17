@@ -70,6 +70,12 @@ This is the method which Azure Webjobs use to deserialize queued messages into P
 Simply call the method `AutoBindLoadedJson` on any `IStoreBackedPropertyController` to use that controller to deserialize messages.
 An example can be found in the Storks.Examples.AzureWebJobs project
 
+#### Custom Data Types
+By default, Storks can automatically store `string` and `byte[]` `StoreBackedProperty` types.  
+When using the default `StoreBackedPropertyController` implementation, Storks can also handle most POCOs using BSON serialization provided by Json.Net.  
+
+If you need to serialize another type, simply implement the `IStoreBackedPropertyEncoder` interface and register it to your controller with the `RegisterEncoder` method on your controller.  The encoder provides methods to serialize the type into a `byte[]` and back to your type. Have a look at the `StringStoreBackedPropertyEncoder` for reference.
+
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
