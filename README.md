@@ -23,13 +23,14 @@ You write it up but hit a snag.  Your queue messages are limited to 64kB! That w
 
 By using a StoreBackedProperty, you can now effortlessly pass objects as large as you like into your queue!  
 Your queue message object now becomes this:  
-```
+
+```C#
 class HtmlToPdfMessage{
   public StoreBackedProperty<string> Html {get; set; } 
 }
 ```
 And your push to queue method becomes this:
-```
+```C#
 public async Task PushHtmlToPdfMessage(string html){
    
    // Create a new data communicator.  Here we use a LocalFileDataCommunicator which stores message data on the local HDD
@@ -49,7 +50,7 @@ public async Task PushHtmlToPdfMessage(string html){
 ```
 Then to dequeue simply do the reverse:
 
-```
+```C#
 public async Task DequeueHtmlToPdf(HtmlToPdfMessage message){
    
    // Create a new data communicator.  Here we use a LocalFileDataCommunicator which stores message data on the local HDD
