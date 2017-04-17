@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Storks
 {
-
     /// <summary>
     /// Provides an implementation of <see cref="IStoreBackedPropertyDataCommunicator"/> that uses provided delegates for read/write ops
     /// </summary>
@@ -38,10 +37,7 @@ namespace Storks
                 return Task.FromResult<int>(1);
             };
 
-            _retrieveDataAsyncDelegate = (string id) =>
-            {
-                return Task.FromResult(getData(id));
-            };
+            _retrieveDataAsyncDelegate = (string id) => Task.FromResult(getData(id));
         }
 
         /// <summary>
@@ -53,7 +49,6 @@ namespace Storks
         {
             return _retrieveDataAsyncDelegate(id);
         }
-
 
         /// <summary>
         /// Stores the given data with a unique id for later retrieval using the delegate that was provided

@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D9F1457A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storks.Tests", "Storks.Tests\Storks.Tests.csproj", "{6458C33B-1377-4B2E-AF1D-9A55DB5A9FEC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{573E45FF-BD45-43B8-998B-7D81B2817023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storks.Examples.AzureWebJobs", "Storks.Examples.AzureWebJobs\Storks.Examples.AzureWebJobs.csproj", "{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{6458C33B-1377-4B2E-AF1D-9A55DB5A9FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6458C33B-1377-4B2E-AF1D-9A55DB5A9FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6458C33B-1377-4B2E-AF1D-9A55DB5A9FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,5 +46,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4DE1EFE6-A7F0-40E2-9112-0D91981172D3} = {BB194044-5D05-4C48-B37C-8C11F02F13F1}
 		{6458C33B-1377-4B2E-AF1D-9A55DB5A9FEC} = {D9F1457A-0EDB-4003-ABE1-3FC696F6266B}
+		{5C2FEBD9-DFC1-4F95-954C-FB18F77D6A61} = {573E45FF-BD45-43B8-998B-7D81B2817023}
 	EndGlobalSection
 EndGlobal

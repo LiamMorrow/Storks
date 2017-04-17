@@ -28,6 +28,7 @@
    <AssemblyVersion>1.2.2.0</AssemblyVersion>
    <FileVersion>1.2.2.0</FileVersion>
  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
