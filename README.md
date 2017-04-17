@@ -4,7 +4,7 @@ A .Net library for loading of data and separating properties into storage.
 Useful for large messages in queues with limited message sizes
 
 [![Build status](https://ci.appveyor.com/api/projects/status/9vsuhammekxpyl1u?svg=true)](https://ci.appveyor.com/project/LiamMorrow/storks)
-
+[![NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)](https://www.nuget.org/packages/Storks/)
 
 
 ## Special thanks:
