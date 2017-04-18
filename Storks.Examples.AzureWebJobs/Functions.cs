@@ -7,7 +7,7 @@ using Microsoft.Azure.WebJobs;
 
 namespace Storks.Examples.AzureWebJobs
 {
-    static class Functions
+    internal static class Functions
     {
         /// <summary>
         /// This function will be triggered by a message appearing in messageQueue.
@@ -23,6 +23,5 @@ namespace Storks.Examples.AzureWebJobs
             // All of those variables will be filled with the data they were given at queue time.  
             // Notice there is no need to set up a controller to populate the data as it is intercepted by Storks
         }
-
     }
 }

@@ -10,12 +10,12 @@ using Storks.AzureStorage;
 
 namespace Storks.Examples.AzureWebJobs
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// This performs the startup necessary for running an Azure WebJob.  It also initializes the Storks controller for data operations
         /// </summary>
-        static void Main()
+        private static void Main()
         {
             var config = new JobHostConfiguration();
             config.Queues.MaxPollingInterval = TimeSpan.FromSeconds(12);
@@ -33,7 +33,6 @@ namespace Storks.Examples.AzureWebJobs
             // This allows the queue handler to not have to worry about data retrieval operations
             storeController.AutoBindLoadedJson();
 
-            
             if (config.IsDevelopment)
             {
                 config.UseDevelopmentSettings();

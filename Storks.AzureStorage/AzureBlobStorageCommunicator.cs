@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
+using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -13,28 +15,54 @@ namespace Storks.AzureStorage
     public class AzureBlobStorageCommunicator : IStoreBackedPropertyDataCommunicator
     {
         /// <summary>
+        /// The prefix of all containers that storks will create
+        /// </summary>
+        public const string ContainerPrefix = "storks-cache";
+
+        /// <summary>
         /// Initializes a new AzureBlobStorageCommunicator
         /// </summary>
         /// <param name="connectionString">The connection string for connecting to Azure Blob storage</param>
-        /// <param name="blobContainer">The container to use for storing data</param>
-        /// <exception cref="System.ArgumentNullException">if either <paramref name="connectionString"/>, <paramref name="blobContainer"/> is null</exception>
-        public AzureBlobStorageCommunicator(string connectionString, string blobContainer)
+        /// <exception cref="System.ArgumentNullException">if <paramref name="connectionString"/> is null</exception>
+        public AzureBlobStorageCommunicator(string connectionString)
         {
             Throw.IfNullOrEmpty(() => connectionString);
-            Throw.IfNullOrEmpty(() => blobContainer);
             ConnectionString = connectionString;
-            BlobContainer = blobContainer;
         }
 
         /// <summary>
-        /// The container to use for storing data
+        /// The minimum amount of time for an item to be cached, before being queued for deletion defaults to 1 day
         /// </summary>
-        public string BlobContainer { get; }
+        public TimeSpan CacheDuration { get; set; } = TimeSpan.FromDays(1);
+
+        /// <summary>
+        /// Gets or sets a value that determines whether Storks will automatically clear caches older than <see cref="CacheDuration"/>
+        /// </summary>
+        public bool PeriodicallyClearCaches { get; set; }
 
         /// <summary>
         /// The connection string for connecting to Azure Blob storage
         /// </summary>
         public string ConnectionString { get; }
+
+        /// <summary>
+        /// Gets the azure storage container names that are being used
+        /// </summary>
+        /// <returns>A Tuple containing the previous, current, and next names that will be used for containers</returns>
+        public (string PreviousName, string CurrentName, string NextName) GetContainerNames()
+        {
+            string getName(DateTime t)
+            {
+                return ContainerPrefix + t.ToString("o");
+            }
+            var time = DateTime.UtcNow;
+            var currentWindow = time.RoundDown(CacheDuration);
+            var previousWindow = currentWindow.Subtract(CacheDuration);
+            var nextWindow = currentWindow.Add(CacheDuration);
+            return (getName(previousWindow),
+                getName(currentWindow),
+                getName(nextWindow));
+        }
 
         /// <summary>
         /// Retrieves the data from the store, using the unique ID given
@@ -75,6 +103,35 @@ namespace Storks.AzureStorage
             await blob.UploadFromByteArrayAsync(data, 0, data.Length).ConfigureAwait(false);
         }
 
+        private async Task ClearOldContainers(CloudBlobClient client)
+        {
+            var token = new BlobContinuationToken();
+            var containers = await client.ListContainersSegmentedAsync(ContainerPrefix, token)
+                .ConfigureAwait(false);
+            var validContainerNames = GetContainerNames();
+
+            if (containers?.Results == null)
+            {
+                return;
+            }
+
+            // loop through all containers
+            var results = containers.Results.ToList();
+            foreach (var container in results)
+            {
+                if (container.Name.StartsWith(ContainerPrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (validContainerNames.NextName != container.Name
+                       && validContainerNames.CurrentName != container.Name
+                       && validContainerNames.PreviousName != container.Name)
+                    {
+                        // Delete the container if it doesn't match the current container or padding windows
+                        await container.DeleteAsync().ConfigureAwait(false);
+                    }
+                }
+            }
+        }
+
         private async Task<CloudBlockBlob> GetBlobReference(string id)
         {
             // Retrieve storage account from connection string.
@@ -83,8 +140,15 @@ namespace Storks.AzureStorage
             // Create the blob client.
             var blobClient = storageAccount.CreateCloudBlobClient();
 
+            if (PeriodicallyClearCaches)
+            {
+                await ClearOldContainers(blobClient).ConfigureAwait(false);
+            }
+            var containerNames = GetContainerNames();
+
             // Retrieve reference to the container
-            var container = blobClient.GetContainerReference(BlobContainer);
+
+            var container = blobClient.GetContainerReference(containerNames.CurrentName);
 
             await container.CreateIfNotExistsAsync().ConfigureAwait(false);
 

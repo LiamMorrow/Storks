@@ -8,18 +8,21 @@ namespace Storks.AzureStorage
     public static class StorksHelpers
     {
         /// <summary>
-        /// Registers encoders for many standard types
+        /// Sets the DataCommunicator of the controller to be a <see cref="AzureBlobStorageCommunicator"/> allowing blob storage to be the backing Store
         /// </summary>
-        /// <param name="controller">The controller to register the encoders to</param>
+        /// <param name="controller">The controller to set the communicator for</param>
         /// <param name="connectionString">The connection string for connecting to Azure Blob storage</param>
-        /// <param name="blobContainer">The container to use for storing data</param>
         /// <exception cref="System.ArgumentNullException">
-        /// if either <paramref name="connectionString"/>, <paramref name="blobContainer"/>, <paramref name="controller"/> is null
+        /// if either <paramref name="connectionString"/>, <paramref name="controller"/> is null
         /// </exception>
-        public static void UseAzureBlobStorage(this IStoreBackedPropertyController controller, string connectionString, string blobContainer)
+        /// <returns>The <see cref="AzureBlobStorageCommunicator"/> to pass additional configuration options</returns>
+        public static AzureBlobStorageCommunicator UseAzureBlobStorage(this IStoreBackedPropertyController controller, string connectionString)
         {
             Throw.IfNull(() => controller);
-            controller.DataCommunicator = new AzureBlobStorageCommunicator(connectionString, blobContainer);
+            var communicator = new AzureBlobStorageCommunicator(connectionString);
+
+            controller.DataCommunicator = communicator;
+            return communicator;
         }
     }
 }
