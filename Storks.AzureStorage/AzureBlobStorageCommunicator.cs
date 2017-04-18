@@ -37,8 +37,9 @@ namespace Storks.AzureStorage
 
         /// <summary>
         /// Gets or sets a value that determines whether Storks will automatically clear caches older than <see cref="CacheDuration"/>
+        /// Defaults to true
         /// </summary>
-        public bool PeriodicallyClearCaches { get; set; }
+        public bool PeriodicallyClearCaches { get; set; } = true;
 
         /// <summary>
         /// The connection string for connecting to Azure Blob storage
