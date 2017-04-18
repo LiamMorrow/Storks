@@ -23,13 +23,14 @@ You write it up but hit a snag.  Your queue messages are limited to 64kB! That w
 
 By using a StoreBackedProperty, you can now effortlessly pass objects as large as you like into your queue!  
 Your queue message object now becomes this:  
-```
+
+```C#
 class HtmlToPdfMessage{
   public StoreBackedProperty<string> Html {get; set; } 
 }
 ```
 And your push to queue method becomes this:
-```
+```C#
 public async Task PushHtmlToPdfMessage(string html){
    
    // Create a new data communicator.  Here we use a LocalFileDataCommunicator which stores message data on the local HDD
@@ -49,7 +50,7 @@ public async Task PushHtmlToPdfMessage(string html){
 ```
 Then to dequeue simply do the reverse:
 
-```
+```C#
 public async Task DequeueHtmlToPdf(HtmlToPdfMessage message){
    
    // Create a new data communicator.  Here we use a LocalFileDataCommunicator which stores message data on the local HDD
@@ -69,6 +70,12 @@ Storks integrates with Json.Net to allow for automatic data retrieval when a mes
 This is the method which Azure Webjobs use to deserialize queued messages into POCOs.  
 Simply call the method `AutoBindLoadedJson` on any `IStoreBackedPropertyController` to use that controller to deserialize messages.
 An example can be found in the Storks.Examples.AzureWebJobs project
+
+#### Custom Data Types
+By default, Storks can automatically store `string` and `byte[]` `StoreBackedProperty` types.  
+When using the default `StoreBackedPropertyController` implementation, Storks can also handle most POCOs using BSON serialization provided by Json.Net.  
+
+If you need to serialize another type, simply implement the `IStoreBackedPropertyEncoder` interface and register it to your controller with the `RegisterEncoder` method on your controller.  The encoder provides methods to serialize the type into a `byte[]` and back to your type. Have a look at the `StringStoreBackedPropertyEncoder` for reference.
 
 ## Contributing
 1. Fork it!
