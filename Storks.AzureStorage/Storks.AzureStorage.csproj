@@ -1,29 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
- <PropertyGroup>
-     <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
-     <PackageId>Storks.AzureStorage</PackageId>
-     <PackageVersion>2.0.0</PackageVersion>
-     <Authors>Liam Morrow</Authors>
-     <Description>Utilities for lazy loading and separating values into azure storage</Description>
-     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-     <PackageReleaseNotes>Updated to match core Storks library</PackageReleaseNotes>
-     <Copyright>Copyright 2016 (c) Liam Morrow. All rights reserved.</Copyright>
-     <PackageTags>storage azure lazy</PackageTags>
- </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
+    <PackageId>Storks.AzureStorage</PackageId>
+    <PackageVersion>2.0.1</PackageVersion>
+    <Authors>Liam Morrow</Authors>
+    <Description>Utilities for lazy loading and separating values into azure storage</Description>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Fixed bug in which storage would not retrieve cached data older than CacheDuration</PackageReleaseNotes>
+    <Copyright>Copyright 2016 (c) Liam Morrow. All rights reserved.</Copyright>
+    <PackageTags>storage azure lazy</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
 
- <PropertyGroup>
-   <DocumentationFile>bin\Release\netstandard1.3\Storks.AzureStorage.xml</DocumentationFile>
-   <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-   <PackageLicenseUrl>https://github.com/LiamMorrow/Storks/blob/master/LICENSE</PackageLicenseUrl>
-   <PackageProjectUrl>https://github.com/LiamMorrow/Storks</PackageProjectUrl>
-   <PackageIconUrl>https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png</PackageIconUrl>
-   <RepositoryUrl>https://github.com/LiamMorrow/Storks</RepositoryUrl>
-   <NeutralLanguage>en-AU</NeutralLanguage>
-   <Version>2.0.0</Version>
-   <AssemblyVersion>2.0.0.0</AssemblyVersion>
-   <FileVersion>2.0.0.0</FileVersion>
- </PropertyGroup>
+  <PropertyGroup>
+    <DocumentationFile>bin\Release\netstandard1.3\Storks.AzureStorage.xml</DocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://github.com/LiamMorrow/Storks/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/LiamMorrow/Storks</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/LiamMorrow/Storks</RepositoryUrl>
+    <NeutralLanguage>en-AU</NeutralLanguage>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />

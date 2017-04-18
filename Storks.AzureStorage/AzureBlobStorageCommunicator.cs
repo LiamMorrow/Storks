@@ -73,12 +73,19 @@ namespace Storks.AzureStorage
         public async Task<byte[]> GetDataAsync(string id)
         {
             Throw.IfNullOrEmpty(() => id);
-            var blob = await GetBlobReference(id).ConfigureAwait(false);
+            var blob = await GetBlobReference(id, false).ConfigureAwait(false);
             var blobExists = await blob.ExistsAsync().ConfigureAwait(false);
 
             if (!blobExists)
             {
-                return null;
+                // Attempt to see if it is in the previous cache, just in case
+                blob = await GetBlobReference(id, true).ConfigureAwait(false);
+                blobExists = await blob.ExistsAsync().ConfigureAwait(false);
+
+                if (!blobExists)
+                {
+                    return null;
+                }
             }
 
             using (var ms = new MemoryStream())
@@ -87,6 +94,7 @@ namespace Storks.AzureStorage
                 return ms.ToArray();
             }
         }
+        
 
         /// <summary>
         /// Stores the given data with a unique id for later retrieval
@@ -99,7 +107,7 @@ namespace Storks.AzureStorage
         {
             Throw.IfNullOrEmpty(() => id);
             data = data ?? new byte[0];
-            var blob = await GetBlobReference(id).ConfigureAwait(false);
+            var blob = await GetBlobReference(id, false).ConfigureAwait(false);
             await blob.UploadFromByteArrayAsync(data, 0, data.Length).ConfigureAwait(false);
         }
 
@@ -132,7 +140,7 @@ namespace Storks.AzureStorage
             }
         }
 
-        private async Task<CloudBlockBlob> GetBlobReference(string id)
+        private async Task<CloudBlockBlob> GetBlobReference(string id, bool usePreviousContainerCache)
         {
             // Retrieve storage account from connection string.
             var storageAccount = CloudStorageAccount.Parse(ConnectionString);
@@ -145,10 +153,13 @@ namespace Storks.AzureStorage
                 await ClearOldContainers(blobClient).ConfigureAwait(false);
             }
             var containerNames = GetContainerNames();
-
+            var containerName = containerNames.CurrentName;
             // Retrieve reference to the container
-
-            var container = blobClient.GetContainerReference(containerNames.CurrentName);
+            if (usePreviousContainerCache)
+            {
+                containerName = containerNames.PreviousName;
+            }
+            var container = blobClient.GetContainerReference(containerName);
 
             await container.CreateIfNotExistsAsync().ConfigureAwait(false);
 
