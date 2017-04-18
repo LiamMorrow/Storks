@@ -1,7 +1,11 @@
 ![Storks Logo](https://raw.githubusercontent.com/LiamMorrow/Storks/master/stork.png)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/9vsuhammekxpyl1u?svg=true)](https://ci.appveyor.com/project/LiamMorrow/storks)
-[![NuGet](https://img.shields.io/nuget/v/Storks.svg)](https://www.nuget.org/packages/Storks/)
+
+#### Nuget
+|Storks|Storks Azure Storage|
+-------|--------------------|
+|[![NuGet](https://img.shields.io/nuget/v/Storks.svg)](https://www.nuget.org/packages/Storks/)|[![NuGet](https://img.shields.io/nuget/v/Storks.AzureStorage.svg)](https://www.nuget.org/packages/Storks.AzureStorage/)|
 # Storks
 A .Net library for loading of data and separating properties into storage.  
 Useful for large messages in queues with limited message sizes
