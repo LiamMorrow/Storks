@@ -3,7 +3,7 @@
  <PropertyGroup>
      <TargetFrameworks>netstandard1.3;net45;net46</TargetFrameworks>
      <PackageId>Storks.AzureStorage</PackageId>
-     <PackageVersion>1.2.2</PackageVersion>
+     <PackageVersion>2.0.0</PackageVersion>
      <Authors>Liam Morrow</Authors>
      <Description>Utilities for lazy loading and separating values into azure storage</Description>
      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
