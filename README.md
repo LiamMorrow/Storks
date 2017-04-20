@@ -8,7 +8,10 @@
 |[![NuGet](https://img.shields.io/nuget/v/Storks.svg)](https://www.nuget.org/packages/Storks/)|[![NuGet](https://img.shields.io/nuget/v/Storks.AzureStorage.svg)](https://www.nuget.org/packages/Storks.AzureStorage/)|
 # Storks
 A .Net library for loading of data and separating properties into storage.  
-Useful for large messages in queues with limited message sizes
+Useful for large messages in queues with limited message sizes  
+
+Find the reasoning for this project on my blog:  
+http://blog.liammorrow.xyz/2017/04/overcoming-azure-storage-queue-message.html
 ## Installation
 Get via nuget at:
 #### Core
