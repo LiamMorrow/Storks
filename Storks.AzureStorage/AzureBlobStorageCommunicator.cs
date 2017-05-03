@@ -39,7 +39,7 @@ namespace Storks.AzureStorage
         /// <summary>
         /// The Format to store the dates as. Can't use ISO8601 because it produces invalid chars
         /// </summary>
-        private const string DateFormat = "yyyyMMddTHHmmss";
+        private const string DateFormat = "yyyyMMddHHmmss";
 
         /// <summary>
         /// Gets or sets a value that determines whether Storks will automatically clear caches older than <see cref="CacheDuration"/>
