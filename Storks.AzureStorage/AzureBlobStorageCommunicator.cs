@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Liam Morrow.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +37,11 @@ namespace Storks.AzureStorage
         public TimeSpan CacheDuration { get; set; } = TimeSpan.FromDays(1);
 
         /// <summary>
+        /// The Format to store the dates as. Can't use ISO8601 because it produces invalid chars
+        /// </summary>
+        private const string DateFormat = "yyyyMMddTHHmmss";
+
+        /// <summary>
         /// Gets or sets a value that determines whether Storks will automatically clear caches older than <see cref="CacheDuration"/>
         /// Defaults to true
         /// </summary>
@@ -54,7 +60,7 @@ namespace Storks.AzureStorage
         {
             string getName(DateTime t)
             {
-                return ContainerPrefix + t.ToString("o");
+                return ContainerPrefix + t.ToString(DateFormat, CultureInfo.InvariantCulture);
             }
             var time = DateTime.UtcNow;
             var currentWindow = time.RoundDown(CacheDuration);
@@ -95,7 +101,6 @@ namespace Storks.AzureStorage
                 return ms.ToArray();
             }
         }
-        
 
         /// <summary>
         /// Stores the given data with a unique id for later retrieval
