@@ -33,7 +33,7 @@ Your queue message object now becomes this:
 
 ```C#
 class HtmlToPdfMessage{
-  public StoreBackedProperty<string> Html {get; set; } 
+  public StoreBackedProperty<string> Html { get; set; } 
 }
 ```
 And your push to queue method becomes this:
